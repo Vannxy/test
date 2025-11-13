@@ -1,1 +1,44 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
 
+.step-indicator {
+    transition: all 0.3s ease;
+}
+
+.form-step.hidden {
+    display: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+@media print {
+    .print-hidden, #weddingForm, #step-progress, #prevBtn, #nextBtn, 
+    .border-t:last-child { 
+        display: none !important;
+    }
+    
+    #result-section {
+        display: block !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    * {
+        color: #000 !important;
+        background: #fff !important;
+    }
+
+    .w-full, .md\:w-1\/2 {
+        width: 100% !important;
+    }
+    
+    .flex, .grid, .flex-col, .md\:flex-row {
+        display: block !important;
+    }
+    .gap-8 {
+        margin-bottom: 20px;
+    }
+}
