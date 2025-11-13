@@ -132,8 +132,8 @@ function calculateSavingsPlan() {
         timeString += `${months} bulan`;
     }
 
-    let finalMessage = `Untuk menutupi kekurangan/memanfaatkan sisa dana sebesar **${formatRupiah(amountToSave)}**, Anda perlu menabung: `;
-    finalMessage += `Dengan tabungan **${formatRupiah(monthlySavings)}** per bulan, Anda akan mencapai target dalam waktu **${timeString}**.`;
+    let finalMessage = `Untuk menutupi kekurangan/memanfaatkan sisa dana sebesar ${formatRupiah(amountToSave)}, Anda perlu menabung: `;
+    finalMessage += `Dengan tabungan ${formatRupiah(monthlySavings)} per bulan, Anda akan mencapai target dalam waktu ${timeString}.`;
     
     savingsMessage.innerHTML = finalMessage;
 }
