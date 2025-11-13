@@ -1,1 +1,242 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Premium Anggaran Pernikahan Adat Jawa Timur 💍</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // Konfigurasi Tailwind untuk Palet Warna Khas Jawa Timur
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'jatim-primary': '#4A2A22', // Cokelat tua, Soga Batik
+                        'jatim-secondary': '#A87A5E', // Cokelat muda keemasan
+                        'jatim-accent': '#FFD700',   // Emas terang (Ornamen)
+                        'jatim-background': '#FDFBF6', // Putih gading/Krem
+                        'jatim-text': '#2C1D17',     // Cokelat sangat tua
+                        'success': '#059669',        // Hijau untuk aman
+                        'warning': '#fbbf24',        // Kuning untuk mendekati
+                        'danger': '#dc2626',         // Merah untuk melebihi
+                        'info': '#3b82f6',           // Biru untuk informasi (savings)
+                    },
+                    fontFamily: {
+                        sans: ['"Open Sans"', 'sans-serif'],
+                        serif: ['"Merriweather"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden shadow-jatim-primary/50">
+        
+        <header class="bg-jatim-primary text-jatim-background p-6 text-center">
+            <h1 class="text-3xl md:text-4xl font-serif font-bold tracking-wide">
+                Kalkulator Anggaran Premium Adat Jawa Timur
+            </h1>
+            <p class="mt-2 text-jatim-accent text-lg">Perkiraan Biaya, Rencana Tabungan, dan Analisis Risiko</p>
+        </header>
+
+        <div class="p-6 md:p-10">
+            
+            <div id="step-progress" class="flex justify-between items-center mb-8">
+                </div>
+            
+            <form id="weddingForm" onsubmit="event.preventDefault()">
+                
+                <div id="step-1" class="form-step">
+                    <h2 class="text-2xl font-serif font-bold text-jatim-primary mb-6 text-center">1. Anggaran & Perencanaan Tabungan</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="mb-4">
+                            <label for="budget" class="block text-lg font-medium text-jatim-text mb-2">Anggaran Maksimal (Rp):</label>
+                            <input
+                                type="number"
+                                id="budget"
+                                min="0"
+                                value="150000000"
+                                class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg"
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label for="monthlySavings" class="block text-lg font-medium text-jatim-text mb-2">Target Tabungan Per Bulan (Rp):</label>
+                            <input
+                                type="number"
+                                id="monthlySavings"
+                                min="0"
+                                value="5000000"
+                                class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="eventType" class="block text-lg font-medium text-jatim-text mb-2">Adat Pernikahan:</label>
+                        <select
+                            id="eventType"
+                            class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg bg-white"
+                        >
+                            <option value="Malangan">Malangan (Standard)</option>
+                            <option value="Surabayan">Surabayan (Premium)</option>
+                            <option value="Suroboyoan">Suroboyoan (Lux)</option>
+                            <option value="Modern Jatim">Modern Jatim (Basic)</option>
+                        </select>
+                        <p class="text-sm text-gray-500 mt-2">Pilihan adat akan memengaruhi kompleksitas dan biaya rias/busana.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="mb-6">
+                            <label for="guestsFamily" class="block text-lg font-medium text-jatim-text mb-2">Jumlah Tamu (Keluarga/Kerabat Inti):</label>
+                            <input
+                                type="number"
+                                id="guestsFamily"
+                                min="0"
+                                value="50"
+                                class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg"
+                            />
+                        </div>
+                         <div class="mb-6">
+                            <label for="guestsFriends" class="block text-lg font-medium text-jatim-text mb-2">Jumlah Tamu (Teman/Kenalan/Umum):</label>
+                            <input
+                                type="number"
+                                id="guestsFriends"
+                                min="0"
+                                value="50"
+                                class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div id="step-2" class="form-step hidden">
+                    <h2 class="text-2xl font-serif font-bold text-jatim-primary mb-6 text-center">2. Venue & Catering</h2>
+                    <div class="mb-6">
+                        <label for="venueType" class="block text-lg font-medium text-jatim-text mb-2">Pilihan Venue:</label>
+                        <select id="venueType" class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg bg-white">
+                            <option value="Rumah Adat">Rumah Adat</option>
+                            <option value="Gedung Bersejarah">Gedung Bersejarah</option>
+                            <option value="Hotel Bintang 5">Hotel Bintang 5</option>
+                            <option value="Balai Kota Surabaya">Balai Kota Surabaya</option>
+                            <option value="Pendopo Agung Trowulan">Pendopo Agung Trowulan</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="cateringPackage" class="block text-lg font-medium text-jatim-text mb-2">Paket Catering:</label>
+                        <select id="cateringPackage" class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg bg-white">
+                            <option value="Basic">Basic</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-lg font-medium text-jatim-text mb-3">Menu Tambahan Khas Jawa Timur:</label>
+                        <div id="menu-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            </div>
+                    </div>
+                </div>
+
+                <div id="step-3" class="form-step hidden">
+                    <h2 class="text-2xl font-serif font-bold text-jatim-primary mb-6 text-center">3. Rias & Busana Pengantin</h2>
+
+                    <div class="mb-4">
+                        <label for="bridalWear" class="block text-lg font-medium text-jatim-text mb-2">Gaya Rias & Busana:</label>
+                        <select
+                            id="bridalWear"
+                            class="w-full p-3 border-2 border-jatim-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-jatim-accent transition-all text-lg bg-white"
+                        >
+                            <option value="Paes Ageng Jatim">Paes Ageng Jatim</option>
+                            <option value="Dodotan Jawa Timuran">Dodotan Jawa Timuran</option>
+                            <option value="Kebaya Modern Modifikasi">Kebaya Modern Modifikasi</option>
+                        </select>
+                        <p class="text-sm text-gray-500 mt-2">Pilihan ini akan disesuaikan secara otomatis berdasarkan Adat yang dipilih di langkah 1.</p>
+                    </div>
+                </div>
+
+                <div id="step-4" class="form-step hidden">
+                    <h2 class="text-2xl font-serif font-bold text-jatim-primary mb-6 text-center">4. Layanan Tambahan</h2>
+
+                    <div class="mb-4">
+                        <label class="block text-lg font-medium text-jatim-text mb-3">Pilih Layanan Tambahan:</label>
+                        <div id="additional-services-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="flex justify-between mt-8 pt-4 border-t border-jatim-secondary">
+                <button id="prevBtn" onclick="window.prevStep()" class="px-6 py-3 bg-jatim-secondary text-white rounded-md hover:bg-jatim-primary transition-colors font-semibold hidden">
+                    &larr; Sebelumnya
+                </button>
+                <p id="error-message" class="text-danger font-semibold self-center hidden"></p>
+                <button id="nextBtn" onclick="window.nextStep()" class="ml-auto px-6 py-3 bg-jatim-primary text-jatim-background rounded-md hover:bg-jatim-secondary transition-colors font-semibold">
+                    Selanjutnya &rarr;
+                </button>
+            </div>
+
+            <div id="result-section" class="mt-12 p-6 bg-jatim-background border border-jatim-accent rounded-lg hidden">
+                <h2 class="text-3xl font-serif font-bold text-center text-jatim-primary mb-6">
+                    Ringkasan Anggaran & Perencanaan
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center print-visible">
+                    <div class="p-3 border-b-2 border-jatim-primary">
+                        <p class="text-lg font-medium text-jatim-text">Anggaran Anda</p>
+                        <p id="user-budget" class="text-2xl font-bold text-jatim-primary mt-1"></p>
+                    </div>
+                    <div class="p-3 border-b-2 border-jatim-primary">
+                        <p class="text-lg font-medium text-jatim-text">Estimasi Biaya</p>
+                        <p id="total-cost" class="text-3xl font-bold text-jatim-accent mt-1"></p>
+                    </div>
+                    <div id="budget-status" class="p-3 rounded-md">
+                        <p class="text-lg font-medium text-white">Status Anggaran</p>
+                        <p id="budget-diff" class="text-xl font-bold mt-1 text-white"></p>
+                    </div>
+                </div>
+
+                <div id="savings-plan-card" class="bg-info/10 border-l-4 border-info p-4 mb-8 hidden print-visible">
+                    <h3 class="text-xl font-semibold text-info flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM5 9.5a1.5 1.5 0 003 0V9a1 1 0 012 0v.5a1.5 1.5 0 003 0V9a1 1 0 012 0v1.5a.5.5 0 01-1 0V11a1 1 0 00-2 0v-.5a1.5 1.5 0 00-3 0V11a1 1 0 00-2 0v-.5a.5.5 0 01-1 0V14h10V8H4v6a.5.5 0 01-1 0V5a1 1 0 011-1h15z"></path></svg>
+                        Rencana Tabungan (Savings Plan)
+                    </h3>
+                    <p id="savings-message" class="mt-2 text-jatim-text"></p>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-start gap-8">
+                    <div class="w-full md:w-1/2">
+                        <canvas id="costPieChart" class="print-visible"></canvas>
+                    </div>
+
+                    <div class="w-full md:w-1/2">
+                        <h3 class="text-2xl font-serif text-jatim-primary mb-4 print-visible">Rincian Biaya (Details)</h3>
+                        <ul id="cost-details" class="grid grid-cols-1 gap-2 text-lg print-visible">
+                            </ul>
+                        <p class="mt-4 text-sm text-gray-500 italic print-visible">Catatan: Biaya rias/busana sudah disesuaikan dengan pilihan Adat.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-jatim-secondary flex justify-end print-hidden">
+                    <button onclick="window.printResult()" class="px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-700 transition-colors font-semibold flex items-center">
+                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m0 2h10a2 2 0 002-2v-4a2 2 0 00-2-2H7a2 2 0 00-2 2v4a2 2 0 002 2zm-1-9a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+                        Cetak / Ekspor Rincian
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+  </html>
